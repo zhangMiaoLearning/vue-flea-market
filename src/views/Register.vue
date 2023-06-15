@@ -2,19 +2,9 @@
   <div class="register-wrap">
     <Title text="REGISTER" className="register" />
     <div class="register-main">
-      <el-form
-        :model="registerParams"
-        :rules="rules"
-        ref="registerFormRef"
-        label-width="120px"
-        class="content"
-      >
+      <el-form :model="registerParams" :rules="rules" ref="registerFormRef" class="register-form">
         <el-form-item label="username" prop="username">
-          <el-input v-model="registerParams.username" placeholder="username">
-            <!-- <template #prepend>
-       <el-button :icon="User"></el-button>
-      </template> -->
-          </el-input>
+          <el-input v-model="registerParams.username" placeholder="username"> </el-input>
         </el-form-item>
         <el-form-item label="password" prop="password">
           <el-input
@@ -23,6 +13,9 @@
             type="password"
             show-password
           >
+            <template v-slot:error="{ error }">
+              <div class="error-message">{{ error }}</div>
+            </template>
           </el-input>
         </el-form-item>
         <el-form-item label="Confirm" prop="checkPass">
@@ -40,18 +33,19 @@
           <el-input v-model="registerParams.captche" />
           <el-button type="primary" @click="getCaptche">Get captche</el-button>
         </el-form-item>
+
+          <el-button :loading="loading" type="primary" @click="submitForm(registerFormRef)">Sign up</el-button>
+
       </el-form>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm(registerFormRef)">Submit</el-button>
-      </el-form-item>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import Title from '../components/Title.vue'
+import Title from '../components/CommonTitle.vue'
 import type { FormInstance, FormRules } from 'element-plus'
+const loading = ref(false)
 const registerParams = reactive({
   username: '',
   password: '',
@@ -121,6 +115,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate((valid) => {
     if (valid) {
       console.log('registerParams!', registerParams)
+      setTimeout(() => {
+        // 假设请求成功
+        loading.value = false;
+        // 其他登录成功后的处理逻辑
+      }, 2000);
     } else {
       console.log('error submit!')
       return false
@@ -161,6 +160,25 @@ const submitForm = (formEl: FormInstance | undefined) => {
     100% {
       background-position: 0 50%;
     }
+  }
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    /deep/.el-form-item__label {
+      width: 100px;
+    }
+  }
+  /deep/.el-form-item__content {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  /deep/.el-form-item__label {
+    font-size: 16px;
+  }
+  /deep/.el-form-item__error {
+    font-size: 16px;
   }
 }
 </style>

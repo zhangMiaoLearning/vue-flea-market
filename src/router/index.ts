@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
-import Home from '@/views/Home.vue'
 import { useLoadingStore } from '@/stores'
 
 
@@ -22,20 +21,18 @@ const router = createRouter({
       name:'login',
       component:Login
     },
-    {
-      path:'/home',
-      name:'home',
-      component:Home
-    }
   ]
 })
 router.beforeEach((to,from,next)=>{
   const store = useLoadingStore()
   store.$state.isLoading = true
+  console.log(123);
+  next()
 })
 router.afterEach((to)=>{
   const store = useLoadingStore()
   store.$state.isLoading = false
+  console.log(234);
 })
 
 export default router
