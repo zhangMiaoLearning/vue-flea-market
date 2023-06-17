@@ -8,24 +8,49 @@
         </div>
       </el-sub-menu>
     </el-menu> -->
-   <ButtonPopover @selectOption="selectOption" size="large" classStyle="dark" buttonName="click" :menu="userMenu"/>
-   <ButtonPopover @selectOption="selectOption" size="small" classStyle="dark" buttonName="click" :menu="userMenu2"/>
+    <ButtonPopover
+      @selectOption="selectOption"
+      size="large"
+      classStyle="dark"
+      buttonName="Mine"
+      :menu="userMenu"
+    />
+    <el-dialog v-model="centerDialogVisible" width="30%" center>
+    <span>
+      Are you sure you want to log out？
+    </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="centerDialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click=confrimLogOut :loading="loading">
+          Confirm
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-// const handleSelect = (key: string, keyPath: string[]) => {
-//   console.log(key, keyPath)
-// }
-// const menuMine = [
-//   { index: '1-1', name: 'Setting' },
-//   { index: '1-2', name: 'Sign out' }
-// ]
-const userMenu = [{key:"1",value:"123"},{key:"2",value:"456"}]
-const userMenu2 = [{key:"111",value:"111"},{key:"222",value:"222"}]
-const selectOption = (key:string,value:string) =>{
-  console.log(key,value);
-  
+import { useRouter } from 'vue-router'
+const userMenu = [
+  { key: 'account', value: 'Setting' },
+  { key: 'login', value: 'log out' }
+]
+const router = useRouter()
+const centerDialogVisible = ref(false)
+const loading = ref(false)
+const selectOption = (key: string, value: string) => {
+  console.log(key, value)
+  if(key != 'login'){
+    router.push('/' + key)
+  }else{
+    centerDialogVisible.value =true
+  }
+}
+const confrimLogOut = ()=>{
+  loading.value =true
+  router.push('/login')
 }
 </script>
 

@@ -60,6 +60,7 @@ const rules = reactive<FormRules>({
   password: [{ required: true, message: 'Please input your password!', trigger: 'blur' }]
 })
 const loading = ref(false)
+const router = useRouter()
 // 提交表单
 const submitForm = throttle((formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -69,6 +70,7 @@ const submitForm = throttle((formEl: FormInstance | undefined) => {
         // 假设请求成功
         loading.value = false;
         // 其他登录成功后的处理逻辑
+        router.push('/home')
       }, 2000);
 },1000)
 </script>

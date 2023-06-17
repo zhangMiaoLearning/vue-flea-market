@@ -1,5 +1,5 @@
 <template>
-  <div v-if="store.isLoading">
+  <div v-if="store.isLoading" class="loading">
     loading
   </div>
 </template>
@@ -12,5 +12,9 @@ console.log(store.isLoading);
 </script>
 
 <style scoped>
-
+.loading {
+  width: 100%;
+  height: 100%;
+  background-color: aqua;
+}
 </style>
