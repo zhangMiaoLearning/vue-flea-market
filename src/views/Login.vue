@@ -47,6 +47,9 @@ import { ref, reactive } from 'vue'
 import Title from '../components/CommonTitle.vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { User, Key } from '@element-plus/icons-vue'
+import { throttle } from '../utils/tools';
+
+
 const loginParms = reactive({
   username: '',
   password: ''
@@ -58,7 +61,7 @@ const rules = reactive<FormRules>({
 })
 const loading = ref(false)
 // 提交表单
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = throttle((formEl: FormInstance | undefined) => {
   if (!formEl) return
   console.log('loginParms!', loginParms)
   loading.value = true;
@@ -67,7 +70,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         loading.value = false;
         // 其他登录成功后的处理逻辑
       }, 2000);
-}
+},1000)
 </script>
 
 <style scoped lang="less">
@@ -90,7 +93,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
   min-height: 454px;
   margin-top: 10vh;
   color: white;
-  background: linear-gradient(to bottom right, #95de64, #36cfc9, #b7eb8f, #b37feb);
+  background: linear-gradient(to bottom right, #26bdcf, #36cfc9, #93e7f2, #b37feb);
   background-size: 400% 400%;
   animation: float 10s infinite;
   @keyframes float {

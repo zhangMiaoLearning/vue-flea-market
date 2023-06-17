@@ -45,6 +45,7 @@
 import { ref, reactive } from 'vue'
 import Title from '../components/CommonTitle.vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import { throttle } from 'lodash';
 const loading = ref(false)
 const registerParams = reactive({
   username: '',
@@ -110,7 +111,7 @@ const getCaptche = () => {
   console.log(registerParams.captche)
 }
 // 提交表单
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = throttle((formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
@@ -125,7 +126,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       return false
     }
   })
-}
+},1000)
 </script>
 
 <style scoped lang="less">
