@@ -54,7 +54,7 @@ const classObject = computed(() => {
   }
 }
 .login {
-  background: linear-gradient(to right, #95de64, #36cfc9, #b7eb8f);
+  background: linear-gradient(to right, #26bdcf, #36cfc9, #93c6f2);
   background-size: 400% 400%;
   animation: float 8s infinite;
   @keyframes float {

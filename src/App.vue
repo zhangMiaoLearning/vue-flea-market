@@ -8,4 +8,6 @@ import Loading from './components/LoadingPage.vue'
   <Loading />
 </template>
 
-<style scoped></style>
+<style lang="less">
+
+</style>

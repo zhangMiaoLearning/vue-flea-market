@@ -6,5 +6,9 @@
     "module": "ESNext",
     "types": ["node"],
     "moduleResolution": "node",
+    "outDir": "dist",
+    "declaration": true,
+    "allowJs": false,
+    "esModuleInterop": true
   }
 }
