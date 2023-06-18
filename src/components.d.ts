@@ -25,10 +25,10 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Header: typeof import('./components/CommonHeader.vue')['default']
+    InformationList: typeof import('./components/InformationList.vue')['default']
     LoadingPage: typeof import('./components/LoadingPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Title: typeof import('./components/CommonTitle.vue')['default']
-    UserList: typeof import('./components/UserList.vue')['default']
   }
 }
