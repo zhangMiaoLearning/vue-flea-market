@@ -61,7 +61,7 @@ const close = () => {
   padding: 5px 0;
 }
 .item-small {
-  font-size: 10px;
+  font-size: 12px;
   padding: 5px 0;
 }
 .button-large {
@@ -94,7 +94,8 @@ const close = () => {
   }
 }
 .primary-active {
-  background-color: #26bdcf;
+  background-color: #409eff;
+  color: #ffff;
 }
 .dark {
   background-color: rgba(38, 202, 220, 0);
