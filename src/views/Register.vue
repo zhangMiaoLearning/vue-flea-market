@@ -29,9 +29,9 @@
         <el-form-item prop="email" label="Email">
           <el-input v-model="registerParams.email" />
         </el-form-item>
-        <el-form-item prop="captche" label="Captche">
-          <el-input v-model="registerParams.captche" />
-          <el-button type="primary" @click="getCaptche">Get captche</el-button>
+        <el-form-item prop="captcha" label="captcha">
+          <el-input v-model="registerParams.captcha" />
+          <el-button type="primary" @click="getCaptcha">Get captcha</el-button>
         </el-form-item>
 
           <el-button :loading="loading" type="primary" @click="submitForm(registerFormRef)">Sign up</el-button>
@@ -52,7 +52,7 @@ const registerParams = reactive({
   password: '',
   checkPass: '',
   email: '',
-  captche: ''
+  captcha: ''
 })
 const registerFormRef = ref<FormInstance>()
 const validatePass = (_rule: any, value: any, callback: any) => {
@@ -100,15 +100,15 @@ const rules = reactive<FormRules>({
       trigger: ['blur', 'change']
     }
   ],
-  captche: [
+  captcha: [
     { required: true },
     { max: 6, message: 'Maximum of 6 characters' },
     { min: 6, message: 'At least 6 characters' }
   ]
 })
 // 验证码方法
-const getCaptche = () => {
-  console.log(registerParams.captche)
+const getCaptcha = () => {
+  console.log(registerParams.captcha)
 }
 // 提交表单
 const submitForm = throttle((formEl: FormInstance | undefined) => {

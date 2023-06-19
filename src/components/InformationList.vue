@@ -129,6 +129,7 @@ const cancle = () => {
 .list__footer__button {
   width: 100px;
   height: 40px;
+  padding: 0 10px;
   vertical-align: middle;
   text-align: center;
   color: #ffffff;
