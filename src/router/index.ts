@@ -3,6 +3,7 @@ import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import Home from '@/views/Home.vue'
 import PersonalInformation from '@/views/PersonalInformation.vue'
+import ManageRolePage from '@/views/ManageRolePage.vue'
 import { useLoadingStore } from '@/stores'
 
 const router = createRouter({
@@ -31,7 +32,12 @@ const router = createRouter({
       path: '/account',
       name: 'account',
       component: PersonalInformation
-    }
+    },
+    {
+      path: '/manage',
+      name: 'manage',
+      component: ManageRolePage
+    },
   ]
 })
 router.beforeEach((to, from, next) => {

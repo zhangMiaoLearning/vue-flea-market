@@ -7,6 +7,7 @@
       buttonName="Mine"
       :menu="userMenu"
     />
+    <NavigationButton @clickNavigationButton="clickNavigationButton" size="large" classStyle="dark" buttonName="Manage" />
     <el-dialog v-model="centerDialogVisible" width="30%" center>
       <span> Do you want to log out? </span>
       <template #footer>
@@ -21,6 +22,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import NavigationButton from './NavigationButton.vue'
 const userMenu = [
   { key: 'account', value: 'Setting' },
   { key: 'login', value: 'log out' }
@@ -39,6 +41,9 @@ const selectOption = (key: string, value: string) => {
 const confrimLogOut = () => {
   loading.value = true
   router.push('/login')
+}
+const clickNavigationButton = ()=>{
+  router.push('/manage')
 }
 </script>
 

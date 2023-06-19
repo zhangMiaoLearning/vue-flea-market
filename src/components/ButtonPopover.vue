@@ -24,8 +24,8 @@ const props = defineProps<{
 }>()
 const isActive = ref(false)
 const iconName = computed(() => (isActive.value ? ArrowUpBold : ArrowDownBold))
-const newLocal = computed(() => (isActive.value ? props.classStyle + '-active' : props.classStyle))
-const buttonClassName = computed(() => (size: string) => 'button-' + size + ' ' + newLocal.value)
+const activeClass = computed(() => (isActive.value ? props.classStyle + '-active' : props.classStyle))
+const buttonClassName = computed(() => (size: string) => 'button-' + size + ' ' + activeClass.value)
 const itemClassName = computed(() => (size: string) => 'item-' + size + ' ' + 'item')
 const emit = defineEmits(['selectOption'])
 const handleSelect = (key: string, value: string) => {
