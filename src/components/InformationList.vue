@@ -39,7 +39,6 @@ const props = defineProps<{
   data: { key: string; label: string; value: string; isEdit: boolean }[]
 }>()
 let listData = JSON.parse(JSON.stringify(props.data))
-const initialData = props.data
 const isEdit = ref(false)
 const emit = defineEmits(['sumbitEdit'])
 const handleClick = () => {
@@ -50,7 +49,7 @@ const handleSumbit = () => {
   centerDialogVisible.value = true
 }
 const handleCancle = () => {
-  listData = initialData
+  listData = JSON.parse(JSON.stringify(props.data))
   isEdit.value = false
   centerDialogVisible.value = false
 }

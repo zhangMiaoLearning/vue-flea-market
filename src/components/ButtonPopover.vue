@@ -16,12 +16,24 @@
 
 <script setup lang="ts">
 import { ArrowDownBold, ArrowUpBold } from '@element-plus/icons-vue'
-const props = defineProps<{
-  classStyle: string
-  size: string
-  buttonName: string
-  menu: { key: string; value: string }[]
-}>()
+const props = defineProps({
+  classStyle: {
+    type: String,
+    default: 'dark'
+  },
+  size: {
+    type: String,
+    default: 'medium'
+  },
+  buttonName: {
+    type: String,
+    default: 'Submit'
+  },
+  menu: {
+    type: Array as PropType<{ key: string; value: string }[]>,
+    default: () => []
+  }
+})
 const isActive = ref(false)
 const iconName = computed(() => (isActive.value ? ArrowUpBold : ArrowDownBold))
 const activeClass = computed(() => (isActive.value ? props.classStyle + '-active' : props.classStyle))
