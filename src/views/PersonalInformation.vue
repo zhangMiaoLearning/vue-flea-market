@@ -1,6 +1,6 @@
 <template>
   <div class="information">
-    <CommonHeader />
+    <CommonHeader title="设置" />
     <div class="information__body">
       <div class="information__list">
         <InformationList :data="data" title="个人信息" @sumbitEdit="sumbit" />

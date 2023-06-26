@@ -1,6 +1,6 @@
 <template>
   
-    <CommonHeader />
+    <CommonHeader title="首页" />
     <div>
         <div>
             <el-input v-model="input" placeholder="Please input" clearable />

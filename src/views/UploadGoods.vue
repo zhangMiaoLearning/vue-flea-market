@@ -1,6 +1,6 @@
 <template>
-  <CommonHeader />
-  <div class="title">商品上传</div>
+  <CommonHeader title="我要卖"/>
+  <div class="title">我要卖</div>
   <div class="container">
     <div class="container__body">
       <el-form

@@ -1,6 +1,6 @@
 <template>
   <div class="manage">
-    <CommonHeader />
+    <CommonHeader title="用户管理"/>
     <div class="manage__body">
       <div class="manage__body__title">Manage User Role</div>
       <div class="manage__body__table">

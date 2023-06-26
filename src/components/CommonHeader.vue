@@ -1,6 +1,12 @@
 <template>
   <div class="header">
-    <div></div>
+    <div>
+      <el-page-header @back="goBack">
+        <template #content>
+          <span class="header__title"> {{ props.title }} </span>
+        </template>
+      </el-page-header>
+    </div>
     <div class="header__navigation">
       <NavigationButton
         @clickNavigationButton="naviagateUpload"
@@ -40,6 +46,12 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import NavigationButton from './NavigationButton.vue'
+const props = defineProps({
+  title: {
+    type:String,
+    default:''
+  }
+})
 const userMenu = [
   { key: 'account', value: '信息设置' },
   { key: 'login', value: '退出登录' }
@@ -66,13 +78,16 @@ const navigateManage = () => {
 const naviagateUpload = () => {
   router.push('/upload')
 }
+const goBack = ()=>{
+  router.push('home')
+}
 </script>
 
 <style scoped lang="less">
 .header {
   background-color: #26bdcf;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   height: 50px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -84,10 +99,21 @@ const naviagateUpload = () => {
 
   &__navigation {
     display: flex;
-    gap:2px
+    gap: 2px;
+  }
+  &__title {
+    color:#ffffff;
+    font-weight: bolder;
+    font-size: 16px;
   }
 }
 .el-menu--horizontal {
   background-color: #26bdcf;
+}
+/deep/.el-page-header__title {
+  color: #ffffff;
+}
+/deep/.el-icon {
+  color:#ffffff
 }
 </style>
