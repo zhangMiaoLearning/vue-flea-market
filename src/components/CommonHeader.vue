@@ -1,16 +1,32 @@
 <template>
   <div class="header">
-    <ButtonPopover
-      @selectOption="selectOption"
-      size="large"
-      classStyle="dark"
-      buttonName="我的"
-      :menu="userMenu"
-    />
-    <NavigationButton @clickNavigationButton="naviagateUpload" size="large" classStyle="dark" buttonName="商品上传" />
-    <NavigationButton @clickNavigationButton="navigateManage" size="large" classStyle="dark" buttonName="用户管理" />
+    <div></div>
+    <div class="header__navigation">
+      <NavigationButton
+        @clickNavigationButton="naviagateUpload"
+        size="large"
+        classStyle="dark"
+        buttonName="商品上传"
+      />
+      <div v-show="userRole == 'manager'">
+        <NavigationButton
+          @clickNavigationButton="navigateManage"
+          size="large"
+          classStyle="dark"
+          buttonName="用户管理"
+        />
+      </div>
+      <ButtonPopover
+        @selectOption="selectOption"
+        size="large"
+        classStyle="dark"
+        buttonName="我的"
+        :menu="userMenu"
+      />
+    </div>
+
     <el-dialog v-model="centerDialogVisible" width="30%" center>
-      <span> 确定要退出吗 </span>
+      <span> 确定要退出登录吗？</span>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -31,6 +47,7 @@ const userMenu = [
 const router = useRouter()
 const centerDialogVisible = ref(false)
 const loading = ref(false)
+const userRole = sessionStorage.getItem('userRole')
 const selectOption = (key: string, value: string) => {
   console.log(key, value)
   if (key != 'login') {
@@ -43,10 +60,10 @@ const confrimLogOut = () => {
   loading.value = true
   router.push('/login')
 }
-const navigateManage = ()=>{
+const navigateManage = () => {
   router.push('/manage')
 }
-const naviagateUpload = ()=>{
+const naviagateUpload = () => {
   router.push('/upload')
 }
 </script>
@@ -55,7 +72,7 @@ const naviagateUpload = ()=>{
 .header {
   background-color: #26bdcf;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   height: 50px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -64,6 +81,11 @@ const naviagateUpload = ()=>{
   left: 0;
   top: 0;
   transition: all 300ms;
+
+  &__navigation {
+    display: flex;
+    gap:2px
+  }
 }
 .el-menu--horizontal {
   background-color: #26bdcf;

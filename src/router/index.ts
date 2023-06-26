@@ -5,6 +5,7 @@ import Home from '@/views/Home.vue'
 import PersonalInformation from '@/views/PersonalInformation.vue'
 import ManageRolePage from '@/views/ManageRolePage.vue'
 import UploadGoods from '@/views/UploadGoods.vue'
+import ErrorPage from '@/views/ErrorPage.vue'
 import { useLoadingStore } from '@/stores'
 
 const router = createRouter({
@@ -43,7 +44,12 @@ const router = createRouter({
       path: '/upload',
       name: 'upload',
       component: UploadGoods
-    }
+    },
+    {
+      path: '/:pathMatch(.*)*', // 匹配任意路径
+      name: 'ErrorPage',
+      component: ErrorPage,
+    },
   ]
 })
 router.beforeEach((to, from, next) => {
@@ -54,7 +60,7 @@ router.beforeEach((to, from, next) => {
     return next()
   } 
   const tokenStr = window.sessionStorage.getItem('auth-token')
-  if (!tokenStr) return next('/login')
+  if (!tokenStr) return next()
 })
 router.afterEach((to) => {
   const store = useLoadingStore()

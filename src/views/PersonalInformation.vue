@@ -3,10 +3,10 @@
     <CommonHeader />
     <div class="information__body">
       <div class="information__list">
-        <InformationList :data="data" title="personal information" @sumbitEdit="sumbit" />
+        <InformationList :data="data" title="个人信息" @sumbitEdit="sumbit" />
       </div>
       <div class="information__password">
-        <div class="information__password__title">change password</div>
+        <div class="information__password__title">修改密码</div>
         <div class="information__password__content">
           <el-form
             :model="changePasswordParams"
@@ -14,43 +14,48 @@
             ref="changePasswordFormRef"
             class="information__password__form"
           >
-            <el-form-item label="password:" prop="password">
-              <el-input
-                v-model="changePasswordParams.password"
-                placeholder="password"
-                type="password"
-                show-password
-              >
-                <template v-slot:error="{ error }">
-                  <div class="error-message">{{ error }}</div>
-                </template>
-              </el-input>
-            </el-form-item>
-            <el-form-item label="confirm:" prop="checkPass">
-              <el-input
-                v-model="changePasswordParams.checkPass"
-                type="password"
-                autocomplete="off"
-                show-password
-              />
-            </el-form-item>
-            <el-form-item prop="captche" label="please click to get email captcha:">
-              <button class="information__password__button small" @click.prevent="getCaptche">
-              Get captcha
-            </button>
-            </el-form-item>
-            <el-form-item prop="captche" label="captche:">
+            <div class="information__password__header">
+              <el-form-item label="旧密码:" prop="password">
+                <el-input
+                  v-model="changePasswordParams.password"
+                  placeholder="password"
+                  type="password"
+                  show-password
+                >
+                  <template v-slot:error="{ error }">
+                    <div class="error-message">{{ error }}</div>
+                  </template>
+                </el-input>
+              </el-form-item>
+              <el-form-item label="确认:" prop="checkPass">
+                <el-input
+                  v-model="changePasswordParams.checkPass"
+                  type="password"
+                  autocomplete="off"
+                  show-password
+                />
+              </el-form-item>
+            </div>
+            <el-form-item prop="captche" label="captche:" class="form__item__captcha">
               <el-input v-model="changePasswordParams.captche" />
+              <button class="information__password__button small" @click.prevent="getCaptche">
+                获取验证码
+              </button>
             </el-form-item>
           </el-form>
         </div>
         <div class="information__password__footer">
+          <el-button
+            @click="resetForm(changePasswordFormRef)"
+            class="information__password__button large reset"
+            >重置</el-button
+          >
           <button
             class="information__password__button large"
             :loading="loading"
             @click="submitForm(changePasswordFormRef)"
           >
-            sumbit
+            提交
           </button>
         </div>
       </div>
@@ -80,9 +85,9 @@ import { throttle } from 'lodash'
 const changePasswordFormRef = ref<FormInstance>()
 const validatePass = (_rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('Please input the password again'))
+    callback(new Error('请再次输入密码!'))
   } else if (value !== changePasswordParams.password) {
-    callback(new Error("Two inputs don't match!"))
+    callback(new Error("两次输入不一致！"))
   } else {
     callback()
   }
@@ -92,28 +97,31 @@ const rules = reactive<FormRules>({
   password: [
     {
       required: true,
-      message: 'Please input your password!',
+      message: '请输入密码!',
       trigger: 'blur'
     },
     {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/,
-      message: 'The password must contain digits, letters, and special symbols@#$%^&+=!'
+      message: '密码必须包含大、小写字母、数字和特殊符号@#$%^&+=!'
     },
-    { max: 20, message: 'Maximum of 20 characters' },
-    { min: 8, message: 'At least 8 characters' }
+    { max: 20, message: '最多20位' },
+    { min: 8, message: '最少8位' }
   ],
   checkPass: [{ validator: validatePass, trigger: 'blur', required: true }],
   captche: [
-    { required: true },
-    { max: 6, message: 'Maximum of 6 characters' },
-    { min: 6, message: 'At least 6 characters' }
+    { required: true,message:'请输入验证码!' },
+    { max: 6, message: '最多6位数字' },
+    { min: 6, message: '最少6位数字' }
   ]
 })
 // 验证码方法
 const getCaptche = throttle(() => {
-  console.log(1);
+  console.log(1)
   console.log(changePasswordParams.captche)
 })
+const resetForm = (formEl: FormInstance | undefined) => {
+  formEl?.resetFields()
+}
 // 提交表单
 const submitForm = throttle((formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -154,27 +162,36 @@ const submitForm = throttle((formEl: FormInstance | undefined) => {
     font-size: 25px;
     font-weight: 500;
     margin-bottom: 20px;
+    color: #606266;
   }
   &__content {
     border-radius: 5px;
     padding: 10px;
     display: flex;
     min-width: 800px;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     background-color: #ffffff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   }
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: raw;
+  }
   &__form {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     width: 100%;
     /deep/.el-form-item {
       width: 50%;
     }
     /deep/.el-form-item__label {
       font-weight: bolder;
-      color: black;
+    }
+    /deep/.el-input {
+      width: auto;
     }
     /deep/.el-input__wrapper {
       height: 23px;
@@ -182,9 +199,13 @@ const submitForm = throttle((formEl: FormInstance | undefined) => {
       border: 0.5px solid black;
       flex-grow: 0;
     }
-    /deep/.el-input__inner{
-      color:black
+    /deep/.el-input__inner {
+      color: black;
     }
+  }
+  .form__item__captcha {
+    display: flex;
+    flex-direction: row;
   }
   &__footer {
     display: flex;
@@ -193,6 +214,7 @@ const submitForm = throttle((formEl: FormInstance | undefined) => {
     justify-content: flex-end;
   }
   &__button {
+    margin-left: 20px;
     vertical-align: middle;
     text-align: center;
     color: #ffffff;
@@ -214,5 +236,11 @@ const submitForm = throttle((formEl: FormInstance | undefined) => {
 .small {
   padding: 0 10px;
   height: 30px;
+}
+.reset {
+  background-color: #84868c;
+  &:hover {
+    background-color: #5a5e62;
+  }
 }
 </style>

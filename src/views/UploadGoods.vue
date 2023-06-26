@@ -1,12 +1,13 @@
 <template>
+  <CommonHeader />
+  <div class="title">商品上传</div>
   <div class="container">
-    <CommonHeader />
     <div class="container__body">
       <el-form
         ref="formRef"
         :rules="rules"
         :model="form"
-        label-width="100px"
+        label-width="120px"
         class="task-form"
         label-position="left"
       >
@@ -40,7 +41,7 @@
             placeholder="请描述商品的信息"
           ></el-input>
         </el-form-item>
-        <el-form-item label="商品价格:" prop="price" class="task-form-item">
+        <el-form-item label="商品价格(元):" prop="price" class="task-form-item">
           <el-input v-model="form.price" placeholder="请输入商品价格"></el-input>
         </el-form-item>
       </el-form>
@@ -48,9 +49,21 @@
         <el-button type="primary" @click="submitForm(formRef)" class="container__form__button"
           >发布</el-button
         >
+        <el-button @click="resetForm(formRef)" class="container__form__button reset">重置</el-button>
       </div>
       <el-dialog v-model="dialogVisible">
         <img w-full :src="dialogImageUrl" alt="Preview Image" />
+      </el-dialog>
+      <el-dialog v-model="centerDialogVisible" width="30%" center>
+        <span> 确定要发布该商品吗</span>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="centerDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="confirmUpload(formRef)" :loading="loading">
+              确认
+            </el-button>
+          </span>
+        </template>
       </el-dialog>
     </div>
   </div>
@@ -62,7 +75,8 @@ import { Plus } from '@element-plus/icons-vue'
 import { uploadGoods } from '../api/api'
 import type { UploadFile } from 'element-plus'
 import { HttpStatusCode } from 'axios'
-
+const centerDialogVisible = ref(false)
+const loading = ref(false)
 const form = reactive({
   title: '',
   product_label: [],
@@ -74,12 +88,17 @@ const dialogVisible = ref(false)
 
 const rules: FormRules = {
   title: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-  price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }]
+  price: [
+    { required: true, message: '请输入商品价格', trigger: 'blur' },
+    {
+      pattern: /^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$/,
+      message: '请输入数字！'
+    }
+  ]
 }
 const labels = ['全新', '九成新', '无包装', '吊牌在', '不砍价', '可小刀']
 const fileList = [] as UploadFile[]
 const formRef = ref<FormInstance>()
-const fileTotal: any = []
 const handleRemove = (file: UploadFile) => {
   fileList.forEach((item, index) => {
     if (item.uid == file.uid) {
@@ -97,8 +116,27 @@ const handleAdd = (file: UploadFile) => {
   fileList.push(file)
 }
 const submitForm = (formEl: FormInstance | undefined) => {
-  console.log(fileTotal)
-
+  if (!formEl) {
+    return
+  } else {
+    formEl.validate(async (valid) => {
+      if (valid) {
+        centerDialogVisible.value = true
+      } else {
+        ElNotification({
+          title: '失败',
+          message: '请按要求完成内容填写',
+          type: 'error'
+        })
+      }
+    })
+  }
+}
+const resetForm = (formEl: FormInstance | undefined) => {
+  formEl?.resetFields()
+}
+const confirmUpload = (formEl: FormInstance | undefined) => {
+  centerDialogVisible.value = false
   if (!formEl) {
     return
   }
@@ -111,13 +149,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
           message: '商品上传成功',
           type: 'success'
         })
+      } else {
+        ElNotification({
+          title: '失败',
+          message: '商品上传失败',
+          type: 'error'
+        })
       }
-    } else {
-      ElNotification({
-        title: '失败',
-        message: '商品上传失败',
-        type: 'error'
-      })
     }
   })
 }
@@ -140,7 +178,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
     background-color: #fff;
   }
 }
-
+.title {
+  font-size: 25px;
+  font-weight: 500;
+  margin: 40px 0 20px 0;
+  color: #606266;
+  margin-left: 10%;
+}
 .container__form__item {
   margin-top: 40px;
   font-size: 12px;
@@ -170,4 +214,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
     opacity: 0.6;
   }
 }
+.reset{
+    background-color: #84868c;
+    &:hover {
+    background-color: #5a5e62;
+  }
+  }
 </style>

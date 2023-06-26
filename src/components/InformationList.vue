@@ -2,7 +2,7 @@
   <div class="list">
     <div class="list__title">
       <div class="list__title__text">{{ props.title }}</div>
-      <button class="list__button" @click="handleClick">Edit</button>
+      <button class="list__button" @click="handleClick">编辑</button>
     </div>
     <div class="list__body">
       <div v-for="item in listData" :key="item.key" class="list__item">
@@ -14,17 +14,17 @@
       </div>
     </div>
     <div v-show="isEdit" class="list__footer">
-      <button class="list__footer__button cancle" @click="handleCancle">cancle</button>
-      <button class="list__footer__button sumbit" @click="handleSumbit">sumbit</button>
+      <button class="list__footer__button cancle" @click="handleCancle">取消</button>
+      <button class="list__footer__button sumbit" @click="handleSumbit">提交</button>
     </div>
   </div>
 
   <el-dialog v-model="centerDialogVisible" width="30%" center>
-    <span> Do want to change your information </span>
+    <span> 你确定要修改你的信息吗？ </span>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="cancle">Cancel</el-button>
-        <el-button type="primary" @click="confrim" :loading="loading"> Confirm </el-button>
+        <el-button @click="cancle">取消</el-button>
+        <el-button type="primary" @click="confrim" :loading="loading"> 确认 </el-button>
       </span>
     </template>
   </el-dialog>
@@ -77,6 +77,7 @@ const cancle = () => {
   &__text {
     font-size: 25px;
     font-weight: 500;
+    color: #606266;
   }
 }
 .list__button {
@@ -111,6 +112,7 @@ const cancle = () => {
   width: 50%;
   padding: 10px 0;
   align-items: center;
+  color: #606266;
   &__label {
     font-weight: bolder;
     line-height: 40px;
