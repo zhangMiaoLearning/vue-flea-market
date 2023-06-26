@@ -4,16 +4,16 @@
       @selectOption="selectOption"
       size="large"
       classStyle="dark"
-      buttonName="Mine"
+      buttonName="我的"
       :menu="userMenu"
     />
-    <NavigationButton @clickNavigationButton="clickNavigationButton" size="large" classStyle="dark" buttonName="Manage" />
+    <NavigationButton @clickNavigationButton="clickNavigationButton" size="large" classStyle="dark" buttonName="用户管理" />
     <el-dialog v-model="centerDialogVisible" width="30%" center>
-      <span> Do you want to log out? </span>
+      <span> 确定要退出吗 </span>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="centerDialogVisible = false">Cancel</el-button>
-          <el-button type="primary" @click="confrimLogOut" :loading="loading"> Confirm </el-button>
+          <el-button @click="centerDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="confrimLogOut" :loading="loading"> 确认 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -24,8 +24,8 @@
 import { useRouter } from 'vue-router'
 import NavigationButton from './NavigationButton.vue'
 const userMenu = [
-  { key: 'account', value: 'Setting' },
-  { key: 'login', value: 'log out' }
+  { key: 'account', value: '信息设置' },
+  { key: 'login', value: '退出登录' }
 ]
 const router = useRouter()
 const centerDialogVisible = ref(false)
