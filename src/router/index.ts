@@ -4,6 +4,7 @@ import Login from '@/views/Login.vue'
 import Home from '@/views/Home.vue'
 import PersonalInformation from '@/views/PersonalInformation.vue'
 import ManageRolePage from '@/views/ManageRolePage.vue'
+import UploadGoods from '@/views/UploadGoods.vue'
 import { useLoadingStore } from '@/stores'
 
 const router = createRouter({
@@ -38,13 +39,19 @@ const router = createRouter({
       name: 'manage',
       component: ManageRolePage
     },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: UploadGoods
+    }
   ]
 })
 router.beforeEach((to, from, next) => {
   const store = useLoadingStore()
   store.$state.isLoading = true
-  console.log(store.$state.isLoading)
-
+  if (to.path === '/login' || '/register') return next()
+  const tokenStr = window.sessionStorage.getItem('auth-token')
+  if (!tokenStr) return next('/login')
   next()
 })
 router.afterEach((to) => {
@@ -53,7 +60,6 @@ router.afterEach((to) => {
     store.$state.isLoading = false
     console.log(store.$state.isLoading)
   }, 2000)
-
 })
 
 export default router

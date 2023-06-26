@@ -16,7 +16,7 @@
                 @selectOption="selectOption"
                 size="small"
                 classStyle="primary"
-                buttonName="Mine"
+                buttonName="Edit"
                 :menu="manageMenu"
                 @click="handleEdit(scope.$index, scope.row)"
               />

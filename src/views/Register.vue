@@ -34,8 +34,9 @@
           <el-button type="primary" @click="getCaptcha">Get captcha</el-button>
         </el-form-item>
 
-          <el-button :loading="loading" type="primary" @click="submitForm(registerFormRef)">Sign up</el-button>
-
+        <el-button :loading="loading" type="primary" @click="submitForm(registerFormRef)"
+          >Sign up</el-button
+        >
       </el-form>
     </div>
   </div>
@@ -45,8 +46,12 @@
 import { ref, reactive } from 'vue'
 import Title from '../components/CommonTitle.vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { throttle } from 'lodash';
+import { throttle } from 'lodash'
+import { getEmailCaptcha, register } from '../api/api'
+import { HttpStatusCode } from 'axios'
+
 const loading = ref(false)
+const router = useRouter()
 const registerParams = reactive({
   username: '',
   password: '',
@@ -107,26 +112,55 @@ const rules = reactive<FormRules>({
   ]
 })
 // 验证码方法
-const getCaptcha = () => {
-  console.log(registerParams.captcha)
-}
+const getCaptcha = throttle(async () => {
+  const res = await getEmailCaptcha(registerParams.email, 'register')
+  if (res.status == HttpStatusCode.Created) {
+    ElNotification({
+      title: '成功',
+      message: res.data,
+      type: 'success'
+    })
+  } else {
+    ElNotification({
+      title: '失败',
+      message: res.data,
+      type: 'error'
+    })
+  }
+}, 3000)
 // 提交表单
 const submitForm = throttle((formEl: FormInstance | undefined) => {
   if (!formEl) return
-  formEl.validate((valid) => {
+  formEl.validate(async (valid) => {
     if (valid) {
-      console.log('registerParams!', registerParams)
-      setTimeout(() => {
-        // 假设请求成功
-        loading.value = false;
-        // 其他登录成功后的处理逻辑
-      }, 2000);
-    } else {
-      console.log('error submit!')
-      return false
+      loading.value = true
+      const res = await register(
+        registerParams.username,
+        registerParams.checkPass,
+        registerParams.email,
+        registerParams.captcha
+      )
+      if (res.status == HttpStatusCode.Created) {
+        loading.value = false
+        router.push('./login')
+        ElNotification({
+          title: '成功',
+          message: res.data,
+          type: 'success'
+        })
+      } else {
+        console.log(res.response.data);
+        
+        loading.value = false
+        ElNotification({
+          title: '失败',
+          message: res.response.data,
+          type: 'error'
+        })
+      }
     }
   })
-},1000)
+}, 3000)
 </script>
 
 <style scoped lang="less">
@@ -174,12 +208,13 @@ const submitForm = throttle((formEl: FormInstance | undefined) => {
     flex-wrap: nowrap;
     gap: 10px;
     justify-content: center;
+    margin-bottom: 10px;
   }
   /deep/.el-form-item__label {
-    font-size: 16px;
+    font-size: 14px;
   }
   /deep/.el-form-item__error {
-    font-size: 16px;
+    font-size: 10px;
   }
 }
 </style>

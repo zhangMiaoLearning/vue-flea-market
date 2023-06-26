@@ -47,8 +47,9 @@ import { ref, reactive } from 'vue'
 import Title from '../components/CommonTitle.vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { User, Key } from '@element-plus/icons-vue'
-import { throttle } from '../utils/tools';
-
+import { throttle } from '../utils/tools'
+import { login } from '../api/api'
+import { HttpStatusCode } from 'axios'
 
 const loginParms = reactive({
   username: '',
@@ -62,17 +63,32 @@ const rules = reactive<FormRules>({
 const loading = ref(false)
 const router = useRouter()
 // 提交表单
-const submitForm = throttle((formEl: FormInstance | undefined) => {
+const submitForm = throttle(async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  console.log('loginParms!', loginParms)
-  loading.value = true;
-      setTimeout(() => {
-        // 假设请求成功
-        loading.value = false;
-        // 其他登录成功后的处理逻辑
+  formEl.validate(async (valid) => {
+    if (valid) {
+      loading.value = true
+      const res = await login(loginParms.username, loginParms.password)
+      if (res.status == HttpStatusCode.Ok) {
+        loading.value = false
+        sessionStorage.setItem('auth-token', res.headers.token)
         router.push('/home')
-      }, 2000);
-},1000)
+        ElNotification({
+          title: '成功',
+          message: res.data,
+          type: 'success'
+        })
+      } else {
+        loading.value = false
+        ElNotification({
+          title: '失败',
+          message: res.response.data,
+          type: 'error'
+        })
+      }
+    }
+  })
+}, 2000)
 </script>
 
 <style scoped lang="less">

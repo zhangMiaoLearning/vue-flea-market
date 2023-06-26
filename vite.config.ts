@@ -33,5 +33,40 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+      server: {
+    host: true,
+    // 设置端口号
+    // port: 8080,
+    //自动打开浏览器
+    open: true,
+    proxy: {
+      "/userapi": {
+        // 代理目标地址
+        target: "http://127.0.0.1:8031",
+        // 允许跨域
+        changeOrigin: true,
+        // 开启websockets代理
+        ws: true,
+        // 验证SSL证书
+        secure: false,
+        // 重写path路径
+        rewrite: (path) => path.replace(/^\/userapi/, ""),
+      },
+      "/productapi": {
+        // 代理目标地址
+        target: "http://127.0.0.1:8032",
+        // 允许跨域
+        changeOrigin: true,
+        // 开启websockets代理
+        ws: true,
+        // 验证SSL证书
+        secure: false,
+        // 重写path路径
+        rewrite: (path) => path.replace(/^\/productapi/, ""),
+      }
+    },
+  },
+
 })
+
