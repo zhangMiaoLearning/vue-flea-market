@@ -7,7 +7,8 @@
       buttonName="我的"
       :menu="userMenu"
     />
-    <NavigationButton @clickNavigationButton="clickNavigationButton" size="large" classStyle="dark" buttonName="用户管理" />
+    <NavigationButton @clickNavigationButton="naviagateUpload" size="large" classStyle="dark" buttonName="商品上传" />
+    <NavigationButton @clickNavigationButton="navigateManage" size="large" classStyle="dark" buttonName="用户管理" />
     <el-dialog v-model="centerDialogVisible" width="30%" center>
       <span> 确定要退出吗 </span>
       <template #footer>
@@ -42,8 +43,11 @@ const confrimLogOut = () => {
   loading.value = true
   router.push('/login')
 }
-const clickNavigationButton = ()=>{
+const navigateManage = ()=>{
   router.push('/manage')
+}
+const naviagateUpload = ()=>{
+  router.push('/upload')
 }
 </script>
 

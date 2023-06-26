@@ -49,10 +49,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useLoadingStore()
   store.$state.isLoading = true
-  if (to.path === '/login' || '/register') return next()
+  if (to.path === ('/login' || '/register')) {
+    console.log("no need token");
+    return next()
+  } 
   const tokenStr = window.sessionStorage.getItem('auth-token')
   if (!tokenStr) return next('/login')
-  next()
 })
 router.afterEach((to) => {
   const store = useLoadingStore()
