@@ -12,7 +12,7 @@
         @clickNavigationButton="naviagateUpload"
         size="large"
         classStyle="dark"
-        buttonName="商品上传"
+        buttonName="我要卖"
       />
       <div v-show="userRole == 'manager'">
         <NavigationButton

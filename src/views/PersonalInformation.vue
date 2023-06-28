@@ -214,7 +214,6 @@ const submitForm = throttle((formEl: FormInstance | undefined) => {
     justify-content: flex-end;
   }
   &__button {
-    margin-left: 20px;
     vertical-align: middle;
     text-align: center;
     color: #ffffff;
@@ -236,6 +235,7 @@ const submitForm = throttle((formEl: FormInstance | undefined) => {
 .small {
   padding: 0 10px;
   height: 30px;
+  margin-left: 20px;
 }
 .reset {
   background-color: #84868c;
